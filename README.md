@@ -53,7 +53,15 @@ The leadership team raised concerns about stagnating revenue and unclear perform
 
 1. 🧑‍🤝‍🧑 Top Customers by Total Sales
 
-![image.png](attachment:74b3ed24-67d2-41ee-9d20-992cda179d09:image.png)
+SELECT 
+    C.CustomerID,
+    C.FirstName + ' ' + ISNULL(C.LastName, '') AS CustomerName,
+    SUM(O.Sales) AS TotalSpent
+FROM Sales.Customers C
+JOIN Sales.Orders O ON C.CustomerID = O.CustomerID
+GROUP BY C.CustomerID, C.FirstName, C.LastName
+ORDER BY TotalSpent DESC;
+
 
 2. 📦 Top-Selling Products (Revenue + Quantity)
 
