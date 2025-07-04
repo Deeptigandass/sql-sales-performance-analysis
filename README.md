@@ -65,27 +65,62 @@ ORDER BY TotalSpent DESC;
 
 2. 📦 Top-Selling Products (Revenue + Quantity)
 
-![image.png](attachment:a5780470-26d2-4a1f-a5a6-7d5370f0e884:image.png)
+SELECT 
+    P.Product,
+    P.Category,
+    SUM(O.Quantity) AS TotalUnitsSold,
+    SUM(O.Sales) AS TotalRevenue
+FROM Sales.Products P
+JOIN Sales.Orders O ON P.ProductID = O.ProductID
+GROUP BY P.Product, P.Category
+ORDER BY TotalRevenue DESC;
+
 
 3. 👨‍💼 Employee-wise Sales Performance
 
-![image.png](attachment:b6c302c5-9882-4b2f-a696-4f37a79038c7:image.png)
+SELECT 
+    E.EmployeeID,
+    E.FirstName + ' ' + ISNULL(E.LastName, '') AS EmployeeName,
+    SUM(O.Sales) AS TotalSales
+FROM Sales.Employees E
+JOIN Sales.Orders O ON E.EmployeeID = O.SalesPersonID
+GROUP BY E.EmployeeID, E.FirstName, E.LastName
+ORDER BY TotalSales DESC;
+
 
 4. 📅 Monthly Sales Trend
 
-![image.png](attachment:12865f69-9698-42c7-8f81-956099044449:image.png)
+SELECT 
+    FORMAT(OrderDate, 'yyyy-MM') AS Month,
+    SUM(Sales) AS MonthlyRevenue
+FROM Sales.Orders
+GROUP BY FORMAT(OrderDate, 'yyyy-MM')
+ORDER BY Month;
+
 
 5. ⚠️ Orders with Missing Billing Info
 
-![image.png](attachment:9e3deba7-ca43-46ab-9891-a32c593b638d:image.png)
+SELECT * 
+FROM Sales.Orders
+WHERE BillAddress IS NULL OR Sales IS NULL;
+
 
 6. 👔 Manager-Subordinate Mapping
 
-![image.png](attachment:3b638101-8494-4575-b11c-24fec54da4f3:image.png)
+SELECT 
+    M.FirstName + ' ' + M.LastName AS Manager,
+    E.FirstName + ' ' + E.LastName AS Subordinate
+FROM Sales.Employees E
+JOIN Sales.Employees M ON E.ManagerID = M.EmployeeID;
+
 
 7. 🚚 Shipped Later than Expected (Delayed)
 
-![image.png](attachment:0e540307-23d9-40cb-8ab6-9705d96d60fb:image.png)
+SELECT 
+    OrderID, OrderDate, ShipDate, DATEDIFF(DAY, OrderDate, ShipDate) AS ShippingDelayDays
+FROM Sales.Orders
+WHERE DATEDIFF(DAY, OrderDate, ShipDate) > 5;
+
 
 ### 📊 **Key Insights**
 
@@ -95,7 +130,6 @@ ORDER BY TotalSpent DESC;
 - Employees like **Michael Ray** generated over **90,000 in sales** — strong candidates for internal incentives.
 - Clear peak in sales in **Feb & March 2025** — indicates **seasonal demand spike**.
 
-![image.png](attachment:bd60b652-d686-49f6-b4e5-4aed6f412217:image.png)
 
 ### 🎯 **Business Impact**
 
