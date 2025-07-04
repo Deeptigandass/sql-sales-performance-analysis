@@ -53,73 +53,47 @@ The leadership team raised concerns about stagnating revenue and unclear perform
 
 1. 🧑‍🤝‍🧑 Top Customers by Total Sales
 
-SELECT 
-    C.CustomerID,
-    C.FirstName + ' ' + ISNULL(C.LastName, '') AS CustomerName,
-    SUM(O.Sales) AS TotalSpent
-FROM Sales.Customers C
-JOIN Sales.Orders O ON C.CustomerID = O.CustomerID
-GROUP BY C.CustomerID, C.FirstName, C.LastName
-ORDER BY TotalSpent DESC;
+![Screenshot 2025-07-04 121430](https://github.com/user-attachments/assets/53a27043-3e1f-4481-be1e-4c8214b1adc2)
+
+
 
 
 2. 📦 Top-Selling Products (Revenue + Quantity)
 
-SELECT 
-    P.Product,
-    P.Category,
-    SUM(O.Quantity) AS TotalUnitsSold,
-    SUM(O.Sales) AS TotalRevenue
-FROM Sales.Products P
-JOIN Sales.Orders O ON P.ProductID = O.ProductID
-GROUP BY P.Product, P.Category
-ORDER BY TotalRevenue DESC;
+![Screenshot 2025-07-04 121516](https://github.com/user-attachments/assets/e589b6fa-994a-4d73-8937-1ea21e11e8ee)
+
 
 
 3. 👨‍💼 Employee-wise Sales Performance
 
-SELECT 
-    E.EmployeeID,
-    E.FirstName + ' ' + ISNULL(E.LastName, '') AS EmployeeName,
-    SUM(O.Sales) AS TotalSales
-FROM Sales.Employees E
-JOIN Sales.Orders O ON E.EmployeeID = O.SalesPersonID
-GROUP BY E.EmployeeID, E.FirstName, E.LastName
-ORDER BY TotalSales DESC;
+![Screenshot 2025-07-04 121814](https://github.com/user-attachments/assets/b5297ff7-d501-4fca-9b95-33c65758bb59)
+
+
+
+
 
 
 4. 📅 Monthly Sales Trend
 
-SELECT 
-    FORMAT(OrderDate, 'yyyy-MM') AS Month,
-    SUM(Sales) AS MonthlyRevenue
-FROM Sales.Orders
-GROUP BY FORMAT(OrderDate, 'yyyy-MM')
-ORDER BY Month;
+![Screenshot 2025-07-04 121620](https://github.com/user-attachments/assets/463c1373-1aff-48cf-a0ec-b8b0cb0b8885)
+
 
 
 5. ⚠️ Orders with Missing Billing Info
 
-SELECT * 
-FROM Sales.Orders
-WHERE BillAddress IS NULL OR Sales IS NULL;
+![Screenshot 2025-07-04 121706](https://github.com/user-attachments/assets/44173fa1-4f08-432e-9843-539031043408)
 
 
 6. 👔 Manager-Subordinate Mapping
 
-SELECT 
-    M.FirstName + ' ' + M.LastName AS Manager,
-    E.FirstName + ' ' + E.LastName AS Subordinate
-FROM Sales.Employees E
-JOIN Sales.Employees M ON E.ManagerID = M.EmployeeID;
+![Screenshot 2025-07-04 121931](https://github.com/user-attachments/assets/bfcdab5d-8259-4f7d-a744-1477e77a8ea3)
 
 
 7. 🚚 Shipped Later than Expected (Delayed)
 
-SELECT 
-    OrderID, OrderDate, ShipDate, DATEDIFF(DAY, OrderDate, ShipDate) AS ShippingDelayDays
-FROM Sales.Orders
-WHERE DATEDIFF(DAY, OrderDate, ShipDate) > 5;
+![Screenshot 2025-07-04 122032](https://github.com/user-attachments/assets/6f880e22-f9d0-476a-a212-530123291839)
+
+
 
 
 ### 📊 **Key Insights**
